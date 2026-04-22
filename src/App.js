@@ -1,5 +1,26 @@
 import { useState, useEffect, useRef } from "react";
 
+// ─── EMAILJS CONFIG ───────────────────────────────────────────────────────────
+const EMAILJS_SERVICE_ID       = "service_e4gi90r";          
+const EMAILJS_PUBLIC_KEY       = "cqWBlZliX0aLNQQDB";        
+const EMAILJS_BOOKING_TEMPLATE = "template_r4zfcvr"; 
+const EMAILJS_CONTACT_TEMPLATE = "template_poipe2s"; 
+
+// Helper: sends email via EmailJS REST API (no npm package needed)
+async function sendEmail(templateId, templateParams) {
+  const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      service_id:  EMAILJS_SERVICE_ID,
+      template_id: templateId,
+      user_id:     EMAILJS_PUBLIC_KEY,
+      template_params: templateParams,
+    }),
+  });
+  if (!res.ok) throw new Error("EmailJS failed: " + res.status);
+}
+
 // ─── DATA ────────────────────────────────────────────────────────────────────
 const ROOMS = [
   {
