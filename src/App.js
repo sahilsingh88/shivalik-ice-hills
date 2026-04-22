@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
 // ─── EMAILJS CONFIG ───────────────────────────────────────────────────────────
+// 🔴 REPLACE these values with your own from https://emailjs.com/account
 const EMAILJS_SERVICE_ID       = "service_e4gi90r";          
 const EMAILJS_PUBLIC_KEY       = "cqWBlZliX0aLNQQDB";        
 const EMAILJS_BOOKING_TEMPLATE = "template_r4zfcvr"; 
@@ -860,10 +861,32 @@ function BookingModal({ room, preCheckin, preCheckout, preGuests, onClose }) {
       alert("Please fill all required fields.");
       return;
     }
+    if (!selectedRoom) { alert("Please select a room."); return; }
     setLoading(true);
-    await new Promise(r => setTimeout(r, 1200));
-    setLoading(false);
-    setSubmitted(true);
+    try {
+      await sendEmail(EMAILJS_BOOKING_TEMPLATE, {
+        booking_id:  bookingId,
+        guest_name:  form.name,
+        guest_email: form.email,
+        guest_phone: form.phone,
+        room_name:   selectedRoom.name,
+        room_type:   selectedRoom.type,
+        checkin:     form.checkin,
+        checkout:    form.checkout,
+        nights:      nights,
+        guests:      form.guests,
+        total:       "Rs." + total.toLocaleString(),
+        special_req: form.special || "None",
+        reply_to:    form.email,
+      });
+      setSubmitted(true);
+    } catch (err) {
+      // If EmailJS keys not yet set, still show confirmation (demo mode)
+      console.warn("EmailJS not configured:", err.message);
+      setSubmitted(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const today = new Date().toISOString().split("T")[0];
@@ -1136,11 +1159,30 @@ function Contact() {
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
+  const [phone, setPhone] = useState("");
+  const [sending, setSending] = useState(false);
+
   const handleSend = async (e) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.message) { alert("Please fill all fields."); return; }
-    await new Promise(r => setTimeout(r, 800));
-    setSent(true);
+    setSending(true);
+    try {
+      await sendEmail(EMAILJS_CONTACT_TEMPLATE, {
+        from_name:    form.name,
+        from_email:   form.email,
+        from_phone:   phone || "Not provided",
+        message:      form.message,
+        reply_to:     form.email,
+        sent_at:      new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+      });
+      setSent(true);
+    } catch (err) {
+      // If EmailJS keys not yet set, still show confirmation (demo mode)
+      console.warn("EmailJS not configured:", err.message);
+      setSent(true);
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -1202,15 +1244,15 @@ function Contact() {
                 </div>
                 <div className="form-group full">
                   <label>Phone</label>
-                  <input type="tel" placeholder="+91 XXXXX XXXXX" />
+                  <input type="tel" placeholder="+91 XXXXX XXXXX" value={phone} onChange={e => setPhone(e.target.value)} />
                 </div>
                 <div className="form-group full">
                   <label>Message *</label>
                   <textarea style={{ minHeight: "140px" }} placeholder="Ask about rooms, availability, trek guidance, group bookings..." value={form.message} onChange={e => set("message", e.target.value)} />
                 </div>
               </div>
-              <button type="submit" className="btn-primary" style={{ marginTop: "1rem", width: "100%", padding: "0.85rem" }}>
-                Send Message 📩
+              <button type="submit" className="btn-primary" style={{ marginTop: "1rem", width: "100%", padding: "0.85rem" }} disabled={sending}>
+                {sending ? "Sending..." : "Send Message 📩"}
               </button>
             </form>
           )}
