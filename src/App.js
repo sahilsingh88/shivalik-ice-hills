@@ -97,6 +97,12 @@ const CSS = `
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  html, body, #root {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
   :root {
     --ice: #e8f4f8;
     --snow: #f7fbfc;
@@ -124,6 +130,8 @@ const CSS = `
     color: var(--text);
     line-height: 1.6;
     overflow-x: hidden;
+    position: relative;
+    width: 100%;
   }
 
   h1,h2,h3,h4 { font-family: 'Cormorant Garamond', serif; line-height: 1.2; }
@@ -140,6 +148,8 @@ const CSS = `
     display: flex; align-items: center; justify-content: space-between;
     height: 70px;
     transition: var(--transition);
+    width: 100%;
+    max-width: 100%;
   }
   .nav.scrolled {
     background: rgba(26,58,74,0.96);
@@ -176,10 +186,13 @@ const CSS = `
     height: 100vh; min-height: 600px;
     position: relative; display: flex; align-items: center; justify-content: center;
     overflow: hidden;
+    width: 100%;
+    max-width: 100%;
   }
   .hero-bg {
     position: absolute; inset: 0;
     background: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80') center/cover no-repeat;
+    width: 100%;
   }
   .hero-overlay {
     position: absolute; inset: 0;
@@ -226,6 +239,7 @@ const CSS = `
     box-shadow: var(--shadow-lg); padding: 0.5rem;
     display: flex; gap: 0.5rem; flex-wrap: wrap;
     max-width: 780px; margin: 0 auto;
+    width: 100%;
   }
   .booking-field {
     flex: 1; min-width: 140px; display: flex; flex-direction: column;
@@ -1408,6 +1422,22 @@ export default function App() {
   const [booking, setBooking] = useState(null);
   const [showAdmin, setShowAdmin] = useState(false);
 
+  // Inject viewport meta to prevent mobile zoom/overflow issues
+  useEffect(() => {
+    let meta = document.querySelector('meta[name="viewport"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.name = "viewport";
+      document.head.appendChild(meta);
+    }
+    meta.content = "width=device-width, initial-scale=1.0, maximum-scale=1.0";
+    // Prevent any element from causing horizontal scroll
+    document.documentElement.style.overflowX = "hidden";
+    document.body.style.overflowX = "hidden";
+    document.body.style.width = "100%";
+    document.body.style.position = "relative";
+  }, []);
+
   const openBooking = (room = null, checkin = "", checkout = "", guests = "1") => {
     setBooking({ room, checkin, checkout, guests });
     if (!room) {
@@ -1416,7 +1446,7 @@ export default function App() {
   };
 
   return (
-    <>
+    <div style={{ width: "100%", maxWidth: "100%", overflowX: "hidden", position: "relative" }}>
       <style>{CSS}</style>
       <Navbar onAdminClick={() => setShowAdmin(true)} />
       <Hero onBookNow={openBooking} />
@@ -1451,6 +1481,6 @@ export default function App() {
 
       {/* Admin Panel */}
       {showAdmin && <AdminPanel onClose={() => setShowAdmin(false)} />}
-    </>
+    </div>
   );
 }
