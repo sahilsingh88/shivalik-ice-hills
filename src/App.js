@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-
+import homestayVideo from "./assets/videos/homestay-tour.mp4";
 // ─── EMAILJS CONFIG ───────────────────────────────────────────────────────────
-// 🔴 REPLACE these values with your own from https://emailjs.com/account
 const EMAILJS_SERVICE_ID       = "service_e4gi90r";          
 const EMAILJS_PUBLIC_KEY       = "cqWBlZliX0aLNQQDB";        
 const EMAILJS_BOOKING_TEMPLATE = "template_r4zfcvr"; 
@@ -1041,14 +1040,23 @@ function VideoSection() {
       <div className="video-inner">
         <span className="section-label">🎬 Experience</span>
         <h2 className="section-title">See It Before You Visit</h2>
-        <p className="section-sub">Take a virtual tour of Shivalik Ice Hills and the breathtaking surroundings of Guptkashi.</p>
-        <div className="video-frame">
-          <iframe
-            src="https://www.youtube.com/embed/jq2ByFz9vf4?autoplay=0&rel=0&modestbranding=1"
-            title="Guptkashi - Kedarnath Region"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+        <p className="section-sub">
+          Take a real tour of Shivalik Ice Hills and the breathtaking 
+          surroundings of Guptkashi.
+        </p>
+        <div className="video-frame" style={{ paddingBottom: "56.25%", position: "relative" }}>
+          <video
+            style={{
+              position: "absolute", top: 0, left: 0,
+              width: "100%", height: "100%",
+              borderRadius: "16px", objectFit: "cover"
+            }}
+            controls
+            poster="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80"
+          >
+            <source src={homestayVideo} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </div>
       </div>
     </div>
@@ -1194,9 +1202,9 @@ function Contact() {
         <div className="contact-info">
           <h3>Reach Us Directly</h3>
           {[
-            ["📍", "Address", "Shivalik Ice Hills, Near Ardhnarishwar Temple, Guptkashi, Rudraprayag, Uttarakhand – 246439"],
-            ["📞", "Phone", "+91 94120 XXXXX · +91 96342 XXXXX"],
-            ["✉️", "Email", "info@shivalikicehills.in"],
+            ["📍", "Address", "Shivalik Ice Hills, Village Dewar, Guptkashi, Rudraprayag, Uttarakhand – 246439"],
+            ["📞", "Phone", "+91 8439381703 · +91 96342 XXXXX"],
+            ["✉️", "Email", "shivalikicehills77@gmail.com"],
             ["🕐", "Check-in / Check-out", "Check-in: 12:00 PM · Check-out: 11:00 AM"],
             ["🏔️", "Altitude", "3,200 meters above sea level"],
           ].map(([icon, title, val]) => (
@@ -1208,7 +1216,7 @@ function Contact() {
               </div>
             </div>
           ))}
-          <a href="https://wa.me/9412000000?text=Hello! I want to book a room at Shivalik Ice Hills, Guptkashi."
+          <a href="https://wa.me/918439381703?text=Hello! I want to book a room at Shivalik Ice Hills, Guptkashi."
              target="_blank" rel="noopener noreferrer" className="whatsapp-btn">
             <span>💬</span> Chat on WhatsApp
           </a>
@@ -1229,7 +1237,7 @@ function Contact() {
             <div style={{ textAlign: "center", padding: "3rem 1rem", background: "var(--ice)", borderRadius: "var(--radius)", border: "1px solid var(--glacier)" }}>
               <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>🙏</div>
               <h4 style={{ color: "var(--peak)", marginBottom: "0.5rem" }}>Message Received!</h4>
-              <p style={{ color: "var(--muted)", fontSize: "0.9rem" }}>Thank you {form.name}! We'll get back to you within 2 hours.</p>
+              <p style={{ color: "var(--muted)", fontSize: "0.9rem" }}>Thank you {form.name}! We'll get back to you shortly.</p>
             </div>
           ) : (
             <form onSubmit={handleSend}>
@@ -1463,9 +1471,9 @@ function Footer({ onBook }) {
           </div>
           <div className="footer-col">
             <h4>Contact</h4>
-            <a href="tel:+919412000000">📞 +91 94120 XXXXX</a>
-            <a href="mailto:info@shivalikicehills.in">✉️ Email Us</a>
-            <a href="https://wa.me/9412000000" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a>
+            <a href="tel:+918439381703">📞 +91 8439381703</a>
+            <a href="mailto:shivalikicehills77@gmail.com">✉️ Email Us</a>
+            <a href="https://wa.me/918439381703" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a>
             <a href="https://maps.google.com/?q=Guptkashi" target="_blank" rel="noopener noreferrer">📍 Directions</a>
           </div>
         </div>
@@ -1525,7 +1533,7 @@ export default function App() {
       <Footer onBook={openBooking} />
 
       {/* WhatsApp Float */}
-      <a href="https://wa.me/9412000000?text=Hello! I'd like to know more about Shivalik Ice Hills, Guptkashi."
+      <a href="https://wa.me/918439381703?text=Hello! I'd like to know more about Shivalik Ice Hills, Guptkashi."
          target="_blank" rel="noopener noreferrer" className="wa-float" title="Chat on WhatsApp">
         <span style={{ fontSize: "1.5rem" }}>💬</span>
         <span className="wa-tooltip">Chat with us</span>
