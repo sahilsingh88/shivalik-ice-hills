@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/shivalik-ice-hills/static/css/main.e6c13ad2.css",
+    "main.js": "/shivalik-ice-hills/static/js/main.569613d4.js",
+    "static/js/453.4e829c9b.chunk.js": "/shivalik-ice-hills/static/js/453.4e829c9b.chunk.js",
+    "index.html": "/shivalik-ice-hills/index.html",
+    "main.e6c13ad2.css.map": "/shivalik-ice-hills/static/css/main.e6c13ad2.css.map",
+    "main.569613d4.js.map": "/shivalik-ice-hills/static/js/main.569613d4.js.map",
+    "453.4e829c9b.chunk.js.map": "/shivalik-ice-hills/static/js/453.4e829c9b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.569613d4.js"
+  ]
+}
